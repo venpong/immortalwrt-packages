@@ -10,9 +10,9 @@ env:
   #源仓库地址
   REPO_URL: https://github.com/immortalwrt/packages.git
   #源仓库分支
-  REPO_BRANCH: master
+  REPO_BRANCH: openwrt-21.02
   #目标仓库分支
-  TARGET_BRANCH: master
+  TARGET_BRANCH: openwrt-21.02
   # 时区
   TZ: Asia/Shanghai
 
@@ -24,7 +24,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           #切换到当前仓库的哪个分支执行
-          ref: master
+          ref: openwrt-21.02
           fetch-depth: 0
           lfs: true
           token: ${{ secrets.TOKEN }}
