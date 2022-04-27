@@ -1,10 +1,7 @@
 name: Test Build
 
 on:
-  push:
-    branches:
-      - openwrt-21.02
-  pull_request:
+  workflow_dispatch:
 
 jobs:
   build:
