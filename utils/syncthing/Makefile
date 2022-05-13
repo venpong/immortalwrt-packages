@@ -1,12 +1,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=syncthing
-PKG_VERSION:=1.18.2
+PKG_VERSION:=1.20.1
 PKG_RELEASE:=$(AUTORELEASE)
 
 PKG_SOURCE:=syncthing-source-v$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://github.com/syncthing/syncthing/releases/download/v$(PKG_VERSION)
-PKG_HASH:=afe2ae979da3b4f1af8aeabd7e1704807242913b516e0b6585510821c9d6d4f2
+PKG_HASH:=a88fabaea11a8df5cc134075c37dc87f1fb33b48d3d8afb1dc8ea11b3c0925bc
 
 PKG_BUILD_DIR=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)/$(PKG_NAME)
 
@@ -28,7 +28,7 @@ GO_PKG_LDFLAGS_X:=\
 	github.com/syncthing/syncthing/lib/build.Stamp=$(SOURCE_DATE_EPOCH) \
 	github.com/syncthing/syncthing/lib/build.User=openwrt \
 	github.com/syncthing/syncthing/lib/build.Host=openwrt \
-	github.com/syncthing/syncthing/lib/build.Program=syncthing
+	github.com/syncthing/syncthing/lib/build.Tags=noupgrade
 GO_PKG_TAGS:=noupgrade
 
 include $(INCLUDE_DIR)/package.mk
@@ -43,10 +43,10 @@ define Package/syncthing
   USERID:=syncthing=499:syncthing=499
 endef
 
-#define Package/syncthing/conffiles
-#/etc/config/syncthing
-#/etc/syncthing
-#endef
+define Package/syncthing/conffiles
+/etc/config/syncthing
+/etc/syncthing
+endef
 
 define Package/syncthing/description
 		Syncthing replaces proprietary sync and cloud services with something
@@ -55,11 +55,11 @@ define Package/syncthing/description
 		third party and how it's transmitted over the Internet.
 endef
 
-#define Package/syncthing/install
-#	$(call GoPackage/Package/Install/Bin,$(1))
-#
-#	$(CP) ./files/* $(1)/
-#endef
+define Package/syncthing/install
+	$(call GoPackage/Package/Install/Bin,$(1))
+
+	$(CP) ./files/* $(1)/
+endef
 
 $(eval $(call GoBinPackage,syncthing))
 $(eval $(call BuildPackage,syncthing))
