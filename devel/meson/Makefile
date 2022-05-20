@@ -11,8 +11,6 @@ PKG_MAINTAINER:=Andre Heider <a.heider@gmail.com>
 PKG_LICENSE:=Apache-2.0
 PKG_LICENSE_FILES:=COPYING
 
-HOST_BUILD_DEPENDS:=ninja/host
-
 include ../../lang/python/pypi.mk
 include $(INCLUDE_DIR)/host-build.mk
 include $(INCLUDE_DIR)/package.mk
@@ -39,7 +37,7 @@ define Package/meson
   CATEGORY:=Development
   TITLE:=meson
   URL:=https://mesonbuild.com/
-  DEPENDS:=+ninja +python3-pkg-resources
+  DEPENDS:=+python3-pkg-resources
 endef
 
 define Package/meson/description
