@@ -8,19 +8,21 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=coremark
-PKG_SOURCE_DATE:=2020-12-17
-PKG_SOURCE_VERSION:=5e0f662ce709f1af8d272bd8d3960034603d3850
+PKG_SOURCE_DATE:=2022-01-03
+PKG_SOURCE_VERSION:=b24e397f7103061b3673261d292a0667bd3bc1b8
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_SOURCE_DATE).tar.gz
 PKG_SOURCE_URL:=https://codeload.github.com/eembc/coremark/tar.gz/$(PKG_SOURCE_VERSION)?
-PKG_HASH:=fb0a2ee2113322eb976fa521d0ac033a997e0097185c2c2325d84ca94a7f5a6d
+PKG_HASH:=1b8c36b202f39b4f8a872ed7d5db1dc4473ee27f7bc2885a9da20e72925c58c3
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_SOURCE_VERSION)
 
-PKG_MAINTAINER:=Lim Guo Wei <limguowei@gmail.com>
+PKG_MAINTAINER:=Lim Guo Wei <limguowei@gmail.com> \
+		Aleksander Jan Bajkowski <olek2@wp.pl>
 PKG_LICENSE:=Apache-2.0
 PKG_LICENSE_FILES:=LICENSE.md
 
+PKG_CONFIG_DEPENDS:=CONFIG_USE_GLIBC
 PKG_USE_MIPS16:=0
 
 include $(INCLUDE_DIR)/package.mk
@@ -30,13 +32,12 @@ define Package/coremark
   CATEGORY:=Utilities
   TITLE:=CoreMark Embedded Microprocessor Benchmark
   URL:=https://github.com/eembc/coremark
+  DEPENDS:=+USE_GLIBC:libpthread
 endef
 
 define Package/coremark/description
   Embedded Microprocessor Benchmark
 endef
-
-DIR_ARCH:=linux$(if $(CONFIG_ARCH_64BIT),64)
 
 define Package/coremark/config
 	config COREMARK_OPTIMIZE_O3
@@ -62,6 +63,9 @@ define Package/coremark/config
 endef
 
 TARGET_CFLAGS += -flto
+ifdef CONFIG_USE_GLIBC
+  TARGET_LDFLAGS += -lpthread
+endif
 
 ifeq ($(CONFIG_COREMARK_OPTIMIZE_O3),y)
 	TARGET_CFLAGS := $(filter-out -O%,$(TARGET_CFLAGS)) -O3
@@ -72,9 +76,9 @@ ifeq ($(CONFIG_COREMARK_ENABLE_MULTITHREADING),y)
 endif
 
 define Build/Compile
-	$(SED) 's|EXE = .exe|EXE =|' $(PKG_BUILD_DIR)/$(DIR_ARCH)/core_portme.mak
+	$(SED) 's|EXE = .exe|EXE =|' $(PKG_BUILD_DIR)/posix/core_portme.mak
 	mkdir $(PKG_BUILD_DIR)/$(ARCH)
-	$(CP) -r $(PKG_BUILD_DIR)/$(DIR_ARCH)/* $(PKG_BUILD_DIR)/$(ARCH)
+	$(CP) -r $(PKG_BUILD_DIR)/linux/* $(PKG_BUILD_DIR)/$(ARCH)
 	$(MAKE) -C $(PKG_BUILD_DIR) PORT_DIR=$(ARCH) $(MAKE_FLAGS) \
 		PORT_CFLAGS="$(TARGET_CFLAGS)" XCFLAGS="$(EXTRA_CFLAGS)" compile
 endef
