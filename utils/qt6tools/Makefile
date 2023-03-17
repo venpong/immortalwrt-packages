@@ -8,16 +8,16 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=qt6tools
-PKG_BASE:=6.3
+PKG_BASE:=6.4
 PKG_BUGFIX:=2
 PKG_VERSION:=$(PKG_BASE).$(PKG_BUGFIX)
-PKG_RELEASE:=$(AUTORELEASE)
+PKG_RELEASE:=1
 
 PKG_SOURCE:=qttools-everywhere-src-$(PKG_VERSION).tar.xz
 PKG_SOURCE_URL:=https://mirrors.tencent.com/qt/archive/qt/$(PKG_BASE)/$(PKG_VERSION)/submodules/ \
 		  https://mirrors.aliyun.com/qt/archive/qt/$(PKG_BASE)/$(PKG_VERSION)/submodules/ \
 		  http://download.qt-project.org/archive/qt/$(PKG_BASE)/$(PKG_VERSION)/submodules/
-PKG_HASH:=e5b07d2ffab68cebe935972506c88ffe1e4b7d24bdc28c67578dbc075799aed2
+PKG_HASH:=a31387916184e4a5ef522d3ea841e8e931cc0f88be0824a7a354a572d5826c68
 HOST_BUILD_DIR:=$(BUILD_DIR_HOST)/qttools-everywhere-src-$(PKG_VERSION)
 
 PKG_MAINTAINER:=Krypton Lee <jun.k.lee199410@outlook.com>
