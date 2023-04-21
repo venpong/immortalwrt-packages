@@ -10,7 +10,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=bind
 PKG_VERSION:=9.18.11
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 USERID:=bind=57:bind=57
 
 PKG_MAINTAINER:=Noah Meyerhans <frodo@morgul.net>
@@ -135,7 +135,7 @@ export BUILD_CC="$(TARGET_CC)"
 TARGET_LDFLAGS += -Wl,--gc-sections,--as-needed
 
 CONFIGURE_ARGS += \
-	--disable-linux-caps \
+	--disable-geoip \
 	--with-openssl="$(STAGING_DIR)/usr" \
 	--with-libtool \
 	--without-lmdb \
