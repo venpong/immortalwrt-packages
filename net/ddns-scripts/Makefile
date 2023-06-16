@@ -8,7 +8,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=ddns-scripts
 PKG_VERSION:=2.8.2
-PKG_RELEASE:=12
+PKG_RELEASE:=13
 
 PKG_LICENSE:=GPL-2.0
 
@@ -242,6 +242,8 @@ define Package/ddns-scripts/postinst
 if [ -z "$${IPKG_INSTROOT}" ]; then
 	/etc/init.d/ddns enabled
 	/etc/init.d/ddns start
+
+	grep -q "/etc/init.d/ddns" "/etc/rc.local" || sed -i "2 a /etc/init.d/ddns restart" "/etc/rc.local"
 fi
 exit 0
 endef
@@ -251,6 +253,8 @@ define Package/ddns-scripts/prerm
 if [ -n "$${IPKG_INSTROOT}" ]; then
 	/etc/init.d/ddns stop
 	/etc/init.d/ddns disable
+
+	sed -i "/ddns restart/d" "/etc/rc.local"
 fi
 exit 0
 endef
